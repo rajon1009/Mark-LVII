@@ -1,0 +1,10 @@
+{
+    "gemini_api_key": "",
+    "voice": "en-US-GuyNeural",
+    "tts_engine": "edgetts",
+    "tts_voice": "en-US-GuyNeural",
+    "wake_word_enabled": false,
+    "enable_remote_dashboard": false,
+    "language": "en",
+    "os_system": "android"
+}
