@@ -3074,6 +3074,13 @@ def main():
     holder: dict = {}
 
     def runner():
+        # Android grants microphone/camera/notifications at runtime; ask before
+        # the audio stream opens. A no-op on desktop and in tests.
+        try:
+            from core import android_permissions
+            android_permissions.ensure(logger=ui.write_log)
+        except Exception as e:
+            ui.write_log(f"SYS: permission check skipped ({e})")
         ui.wait_for_api_key()
         jarvis = JarvisLive(ui)
         holder["jarvis"] = jarvis

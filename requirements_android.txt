@@ -1,3 +1,6 @@
+# Packages the Android build installs.
+# Keep this list in sync with `requirements =` in buildozer.spec — that line is
+# what buildozer actually reads; this file is for a plain pip install in Termux.
 google-genai
 httpx
 websockets
@@ -11,8 +14,12 @@ pyjnius
 fastapi
 uvicorn
 numpy
-scipy
 psutil
-vosk
-openwakeword
-onnxruntime
+
+# Optional, desktop/Termux only. They have no python-for-android recipe, so
+# they are deliberately absent from buildozer.spec and the APK degrades to
+# Gemini Live audio input without them (core/stt.py and core/wake_word.py
+# import them inside functions and handle ImportError).
+# vosk
+# openwakeword
+# onnxruntime
