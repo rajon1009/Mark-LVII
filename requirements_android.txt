@@ -14,7 +14,8 @@ pyjnius
 fastapi
 uvicorn
 numpy
-psutil
+# psutil has no Android wheel/recipe; system_monitor degrades without it
+# psutil
 
 # Optional, desktop/Termux only. They have no python-for-android recipe, so
 # they are deliberately absent from buildozer.spec and the APK degrades to

@@ -33,7 +33,7 @@ source.exclude_patterns = */__pycache__/*
 # comma separated e.g. requirements = sqlite3,kivy
 # scipy was listed but nothing in the project imports it; its recipe is slow and
 # a common build failure on p4a, so it is not part of the APK.
-requirements = python3,kivy,pyjnius,requests,certifi,pillow,edge-tts,google-genai,httpx,websockets,fastapi,uvicorn,numpy,psutil
+requirements = python3,kivy,pyjnius,requests,certifi,pillow,edge-tts,google-genai,httpx,websockets,fastapi,uvicorn,numpy
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -63,10 +63,11 @@ android.minapi = 24
 # versions the pinned p4a release recommends (NDK 28c for p4a 2026.05). A stale
 # 25b here is what makes a modern p4a fail at the first recipe.
 
-# (str) python-for-android revision. Pinning the release keeps CI reproducible;
-# master moves and has broken builds before. This release adds the recipes this
-# app needs (pydantic-core, httpx, vosk, grpcio).
-p4a.branch = v2026.05.09
+# (str) python-for-android revision. v2026.05.09's pure-python pip-install stage
+# breaks on modern pip (capture_logging removed). PR #3360 (commit d2ee8c5 on
+# develop) fixes the venv self-upgrade. See issue #3364.
+p4a.branch = develop
+p4a.commit = d2ee8c5
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 android.private_storage = True
