@@ -9,6 +9,9 @@ package.name = jarvisai
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.example
 
+# (str) Application versioning (must be set; otherwise buildozer refuses to build)
+version = 1.0
+
 # (str) Source code where the main.py lives
 source.dir = .
 
