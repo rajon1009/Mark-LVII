@@ -34,14 +34,21 @@ source.exclude_patterns = */__pycache__/*
 # scipy was listed but nothing in the project imports it; its recipe is slow and
 # a common build failure on p4a, so it is not part of the APK.
 #
-# pydantic + pydantic-core are NOT optional: google-genai imports pydantic in
-# google/genai/types.py, so the first build shipped an APK where
-# `from google import genai` failed and every Gemini call was dead.
-# p4a resolves pip requirements with --no-deps and does not pull recipes for
-# transitive dependencies, so both have to be listed. The p4a recipe at the
-# pinned branch builds pydantic-core 2.41.4, and pydantic 2.12.3 is the release
-# that pins exactly that core version.
-requirements = python3,kivy,pyjnius,requests,certifi,pillow,edge-tts,google-genai,httpx,websockets,fastapi,uvicorn,numpy,pydantic==2.12.3,pydantic-core
+# The Gemini SDK and its whole dependency chain are listed explicitly.
+# p4a installs these with `pip --no-deps` and only builds recipes for the
+# packages named here, so the first green build shipped an APK where
+# `from google import genai` died on a missing pydantic (plus anyio,
+# google-auth, tenacity, distro, typing-*) and every Gemini call with it.
+#
+# The pins are one consistent set:
+#   google-genai 2.8.0   last release that accepts pydantic 2.12.x-core 2.41.4
+#                        (2.9+ demands pydantic 2.12.5 / core 2.41.5, which the
+#                        p4a recipe pinned at our branch does not build)
+#   pydantic 2.12.3      pins pydantic-core==2.41.4 — exactly the recipe
+#   websockets 16.0      google-genai 2.x wants <17
+# httpx (recipe 0.28.1), requests and certifi satisfy the rest; pydantic-core
+# is the only compiled piece, everything else is pure Python.
+requirements = python3,kivy,pyjnius,requests,certifi,pillow,numpy,httpx,edge-tts,google-genai==2.8.0,pydantic==2.12.3,pydantic-core,annotated-types,typing-inspection,typing-extensions,anyio,google-auth,pyasn1,pyasn1-modules,tenacity,distro,sniffio,websockets==16.0,fastapi,uvicorn
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
