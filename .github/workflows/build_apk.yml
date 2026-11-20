@@ -88,13 +88,6 @@ jobs:
             buildozer-${{ runner.os }}-
 
       - name: Build Android APK with Buildozer
-        # maturin — the build backend of pydantic-core — refuses to produce an
-        # Android wheel unless it is told the API level. p4a's Rust recipe sets
-        # the linker and PYO3_CROSS_* vars but not this one, so the build died
-        # with "Failed to determine Android API level" after a clean cargo
-        # compile. buildozer passes its environment down to every recipe.
-        env:
-          ANDROID_API_LEVEL: "24"
         run: |
           set -o pipefail
           buildozer -v android debug 2>&1 | tee buildozer.log

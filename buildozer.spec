@@ -83,6 +83,10 @@ android.minapi = 24
 # develop) fixes the venv self-upgrade. See issue #3364.
 p4a.branch = develop
 p4a.commit = d2ee8c5
+# recipes/pydantic-core shadows p4a's builtin recipe so the PEP 517 build of
+# pydantic-core receives ANDROID_API_LEVEL (maturin refuses to build without
+# it, and p4a's generated env drops anything exported by CI).
+p4a.local_recipes = ./recipes
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 android.private_storage = True
