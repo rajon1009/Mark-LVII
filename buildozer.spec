@@ -56,7 +56,8 @@ android.accept_sdk_license = True
 android.api = 35
 
 # (int) Minimum API your APK / AAB will support.
-android.minapi = 21
+# 24 is required by numpy (p4a refuses to build it below 24). Android 7.0+.
+android.minapi = 24
 
 # android.sdk / android.ndk are deliberately not set: buildozer then uses the
 # versions the pinned p4a release recommends (NDK 28c for p4a 2026.05). A stale
