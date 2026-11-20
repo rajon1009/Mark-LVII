@@ -33,7 +33,15 @@ source.exclude_patterns = */__pycache__/*
 # comma separated e.g. requirements = sqlite3,kivy
 # scipy was listed but nothing in the project imports it; its recipe is slow and
 # a common build failure on p4a, so it is not part of the APK.
-requirements = python3,kivy,pyjnius,requests,certifi,pillow,edge-tts,google-genai,httpx,websockets,fastapi,uvicorn,numpy
+#
+# pydantic + pydantic-core are NOT optional: google-genai imports pydantic in
+# google/genai/types.py, so the first build shipped an APK where
+# `from google import genai` failed and every Gemini call was dead.
+# p4a resolves pip requirements with --no-deps and does not pull recipes for
+# transitive dependencies, so both have to be listed. The p4a recipe at the
+# pinned branch builds pydantic-core 2.41.4, and pydantic 2.12.3 is the release
+# that pins exactly that core version.
+requirements = python3,kivy,pyjnius,requests,certifi,pillow,edge-tts,google-genai,httpx,websockets,fastapi,uvicorn,numpy,pydantic==2.12.3,pydantic-core
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait

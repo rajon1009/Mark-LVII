@@ -56,6 +56,20 @@ jobs:
             zip \
             unzip
 
+      # pydantic-core is a Rust extension: p4a's recipe runs cargo and
+      # `rustup target add` for each Android ABI. The runner image normally has
+      # rustup already; this makes a missing toolchain an obvious failure
+      # instead of a confusing one deep in the build.
+      - name: Ensure Rust toolchain
+        run: |
+          if ! command -v rustup >/dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+              | sh -s -- -y --profile minimal
+            echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          fi
+          rustup --version
+          cargo --version
+
       - name: Install Buildozer & Dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
